@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File/URL Reader</title>
+</head>
+<body>
+    <h1>File/URL Reader</h1>
+    
+    <form>
+        <label for="inputField">File Path or URL:</label>
+        <input type="text" id="inputField" name="inputField" required>
+        
+        <label for="outputField">Output Filename (optional):</label>
+        <input type="text" id="outputField" name="outputField">
+        
+        <button id="readButton">Read/Write</button>
+    </form>
+    
+    <div id="outputArea"></div>
+    
+    <script>
+        const outputArea = document.getElementById('outputArea');
+        const inputField = document.getElementById('inputField');
+        const outputField = document.getElementById('outputField');
+        const readButton = document.getElementById('readButton');
+    
+        readButton.addEventListener('click', () => {
+            const input = inputField.value;
+            const output = outputField.value;
+    
+            // Perform some action based on the input (e.g., fetch and display content)
+            if (input) {
+                if (input.startsWith('http://') || input.startsWith('https://')) {
+                    // It's a URL
+                    fetch(input)
+                        .then(response => response.text())
+                        .then(data => {
+                            if (output) {
+                                // If an output filename is provided, you can write the data to a Blob and create a download link
+                                const blob = new Blob([data], { type: 'text/plain' });
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = output;
+                                a.style.display = 'none';
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            } else {
+                                // If no output filename is provided, display the content in the outputArea
+                                outputArea.textContent = data;
+                            }
+                        })
+                        .catch(error => {
+                            outputArea.textContent = `Error fetching ${input}:\n${error}`;
+                        });
+                } else {
+                    // It's a file path (for security reasons, you can't read local files from the browser)
+                    outputArea.textContent = 'Local file reading is not supported in the browser due to security restrictions.';
+                }
+            } else {
+                outputArea.textContent = 'Please provide an input (file path or URL).';
+            }
+        });
+    </script>
+    
+</body>
+</html>
