@@ -45,9 +45,8 @@ If the provided argument is a URL (starts with 'http://' or 'https://'), it uses
 The optional `--out` flag can be used to specify an output filename for writing the content to a file.
 
 - **Example Usage**:
-  - Read and print a file: `node step2.js file.txt`
-  - Read and print a URL: `node step2.js http://example.com`
-  - Read and print with output to a file: `node step2.js --out output.txt file.txt`
+  - Read and print a file: `node step2.js one.txt`
+  - Read and print a URL: `node step2.js http://google.com`
 
 ### `step3.js`
 
